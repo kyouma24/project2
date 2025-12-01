@@ -16,8 +16,8 @@ jobs:
         run: echo "Repository Owner = ${{ github.repository_owner }}"
       - name: All Event Info
         run: echo "Event Info = ${{ toJSON(github.event) }}"
-      - name: Expression 1
-        if: endsWith('Hello World', 'ld')
+      - name: Context Condition
+        if: ${{ endsWith(toJson(github.repository_owner), '24') }}
         run: echo "The expression is true!"
       - name: Expression 2
         if: startsWith('Hello World', 'Me')
