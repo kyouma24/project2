@@ -2,7 +2,7 @@ name: Output Workflow
 on:
   push:
     paths:
-        - .github/workflows/output.yml
+        - .github/workflows/context.yml
 jobs:
   outputs:
     runs-on: ubuntu-latest
