@@ -17,8 +17,8 @@ jobs:
         run: npm run build
       - name: Publish JS file name
         id: publish
-        run: find dist/assets/**.js -type f -execdir echo 'file={}' >> $GITHUB_OUTPUT ';'
-		
+        run: |
+          find dist/assets -type f -name '*.js' -exec bash -c 'echo "file=$1" >> "$GITHUB_OUTPUT"' _ {} \;
   job2:
     runs-on: ubuntu-latest
     needs: job1
