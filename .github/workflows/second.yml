@@ -2,12 +2,12 @@ name: Context testing
 on: push
 
 jobs:
-  dump_contexts_to_log:
+  github_context_to_logs:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        run: echo "${{ toJson(github) }}"
-      - name: Dump steps context
-        run: echo "${{ toJson(steps) }}"
-      - name: Dump runner context
-        run: echo "${{ toJson(runner) }}"
+      - name: GitHub Event Name
+        run: echo "${{ toJson(github.event_name) }}"
+      - name: Head Ref
+        run: echo "${{ toJson(github.head_ref) }}"
+      - name: Repo Owner
+        run: echo "${{ toJson(github.repository_owner	) }}"
