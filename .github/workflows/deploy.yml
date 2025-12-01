@@ -20,7 +20,6 @@ jobs:
         with:
           path: node_modules
           key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: node-${{ runner.os }}-
       - name: Install dependencies
         run: npm ci
       - name: Lint Code
@@ -38,8 +37,8 @@ jobs:
         with:
           path: node_modules
           key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: node-${{ runner.os }}-
       - name: Install dependencies
+        if: steps.caching.outputs.cache-hit != 'true'
         run: npm ci
       - name: Test Code
         run: npm test
@@ -60,8 +59,8 @@ jobs:
         with:
           path: node_modules
           key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: node-${{ runner.os }}-
       - name: Install dependencies
+        if: steps.caching.outputs.cache-hit != 'true'
         run: npm ci
       - name: Build Code
         run: npm run build
@@ -82,8 +81,8 @@ jobs:
         with:
           path: node_modules
           key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: node-${{ runner.os }}-
       - name: Install dependencies
+        if: steps.caching.outputs.cache-hit != 'true'
         run: npm ci
       - name: Deploy Code
         run: echo "Deployed Application Successfully"
