@@ -1,6 +1,8 @@
 name: Variables Workflow
 on:
   push:
+    paths: 
+        - .github/workflows/vars.yml
 env: 
   name: "Raghav"
   age: "29"
