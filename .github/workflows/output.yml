@@ -16,3 +16,19 @@ jobs:
         run: echo "Repository Owner = ${{ github.repository_owner }}"
       - name: All Event Info
         run: echo "Event Info = ${{ toJSON(github.event) }}"
+      - name: Expression 1
+        if: endsWith('Hello World', 'ld')
+        run: echo "The expression is true!"
+      - name: Expression 2
+        if: startsWith('Hello World', 'Me')
+        run: echo "The expression is false!"
+
+      - name: OR Condition
+        if: ${{ endsWith('Hello', 'lo') || startsWith('World', 'War') || contains('Raghav', 'ha') }}
+        run: echo "At least one condition is true!"
+
+      - name: AND Condition
+        if: ${{ endsWith('Hello', 'lo') && startsWith('World', 'War') && contains('Raghav', 'ha') }}
+        run: echo "All conditions are true!"
+
+
