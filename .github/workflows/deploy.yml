@@ -13,13 +13,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '20'
       - name: Cache Node Modules
         id: caching
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          restory-keys: node-
       - name: Install dependencies
         run: npm ci
       - name: Lint Code
@@ -35,8 +36,9 @@ jobs:
         id: caching
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: node-${{ runner.os }}-
       - name: Install dependencies
         run: npm ci
       - name: Test Code
@@ -51,13 +53,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '20'
       - name: Cache Node Modules
         id: caching
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: node-${{ runner.os }}-
       - name: Install dependencies
         run: npm ci
       - name: Build Code
@@ -72,13 +75,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '20'
       - name: Cache Node Modules
         id: caching
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: node-${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: node-${{ runner.os }}-
       - name: Install dependencies
         run: npm ci
       - name: Deploy Code
