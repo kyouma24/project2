@@ -12,5 +12,5 @@ jobs:
             GITHUB_REPO: ${{ toJSON(github.repository) }}
         run: echo $GITHUB_REPO
       - name: Github Owner
-        if: github.repository_owner != 'kyouma'
+        if: github.repository_owner != 'kyouma24'
         run: echo "Repository Owner = ${{ github.repository_owner }}"
