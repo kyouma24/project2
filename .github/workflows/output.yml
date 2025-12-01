@@ -1,6 +1,8 @@
 name: Output Workflow
 on:
   push:
+    paths:
+        - .github/workflows/output.yml
 jobs:
   outputs:
     runs-on: ubuntu-latest
