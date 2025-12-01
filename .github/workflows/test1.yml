@@ -1,5 +1,8 @@
 name: First Workflow
-on: push
+on: 
+  push: 
+    paths: [.github/workflows/test1.yml, src/**]
+  workflow_dispatch:
 jobs:
   lint: 
     runs-on: ubuntu-latest
