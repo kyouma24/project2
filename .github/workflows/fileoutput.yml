@@ -24,4 +24,4 @@ jobs:
     needs: job1
     steps:
       - name: Display File Name
-        run: echo "File Name is $ {{ needs.job1.publish.outputs.file }}"
+        run: echo "File Name is ${{ needs.job1.outputs.file }}"
