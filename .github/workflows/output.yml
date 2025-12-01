@@ -1,0 +1,9 @@
+name: Output Workflow
+on:
+  push:
+jobs:
+  outputs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GithHub Repo
+        run: echo "Repository: ${{ toJSON(github.repository) }}"
