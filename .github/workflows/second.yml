@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: GitHub Event Name
         run: echo "${{ toJson(github.event_name) }}"
-      - name: Head Ref
-        run: echo "${{ toJson(github.head_ref) }}"
+      - name: Repo URL
+        run: echo "${{ toJson(github.repositoryUrl) }}"
       - name: Repo Owner
         run: echo "${{ toJson(github.repository_owner	) }}"
