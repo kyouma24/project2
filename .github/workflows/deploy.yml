@@ -9,10 +9,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+      - name: Cache Node Modules
+        id: caching
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Lint Code
@@ -24,10 +31,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Cache Node Modules
+        id: caching
+        uses: actions/cache@v4
         with:
-          node-version: '24'
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Test Code
@@ -43,6 +52,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+      - name: Cache Node Modules
+        id: caching
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Build Code
