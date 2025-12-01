@@ -1,6 +1,5 @@
 name: Node Project
 on: 
-  push: 
   workflow_dispatch:
 jobs: 
   testing: 
@@ -18,6 +17,7 @@ jobs:
         run: npm test
   build: 
     runs-on: ubuntu-latest
+    needs: testing
     steps: 
       - name: Checkout repository
         uses: actions/checkout@v6
