@@ -14,3 +14,5 @@ jobs:
       - name: Github Owner
         if: github.repository_owner != 'kyouma24'
         run: echo "Repository Owner = ${{ github.repository_owner }}"
+      - name: All Event Info
+        run: echo "Event Info = ${{ toJSON(github.event) }}"
