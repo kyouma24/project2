@@ -6,4 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: GithHub Repo
-        run: echo "Repository: ${{ toJSON(github.repository) }}"
+        env: 
+            GITHUB_REPO: ${{ toJSON(github.repository) }}
+        run: echo $GITHUB_REPO
+      - name: Github Owner
+        run: echo "Repository Owner = ${{ github.repository_owner }}"
