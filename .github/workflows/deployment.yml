@@ -10,7 +10,6 @@ env:
 jobs:
   test:
     env: 
-      MONGODB_CLUSTER_ADDRESS: cluster0.484eg38.mongodb.net/
       MONGODB_USERNAME: kyouma
       MONGODB_PASSWORD: Steinsgate100
       PORT: 8080
@@ -26,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run server
-        run: npm start & npx wait-on http://127.0.0.1:${{ env.PORT}}
+        run: npm start & npx wait-on http://127.0.0.1:${{ env.PORT }}
       - name: Run tests
         run: npm test
       - name: Output information
@@ -39,3 +38,4 @@ jobs:
         run: |        
           echo "The database name is ${{ env.MONGODB_DB_NAME }}."
           echo "The username is ${{ env.MONGODB_USERNAME }}."
+          echo "The password is ${{ secrets.MONGODB_PASSWORD }}."
