@@ -4,12 +4,14 @@ on:
     branches:
       - master
       - dev
+    paths:
+      - .github/workflows/deployment.yml
 
 env:
   MONGODB_DB_NAME: my_database
 jobs:
   test:
-    environment: project2
+    environment: testing
     env:
       PORT: 8080
     runs-on: ubuntu-latest
@@ -28,13 +30,15 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Output information
+        env: 
+          
         run: | 
           echo "MONGODB_CLUSTER_ADDRESS=${{ vars.MONGODB_CLUSTER_ADDRESS }}"
           echo "The username is ${{ secrets.MONGODB_USERNAME }}."
           echo "The password is ${{ secrets.MONGODB_PASSWORD }}."
   deploy:
     needs: test
-    environment: project2
+    environment: testing
     runs-on: ubuntu-latest
     steps:
       - name: Output information
