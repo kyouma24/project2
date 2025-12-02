@@ -6,6 +6,8 @@ on:
       - dev
     paths:
       - .github/workflows/deployment.yml
+      - '**/package-lock.json'
+  workflow_dispatch:
 
 env:
   MONGODB_DB_NAME: my_database
