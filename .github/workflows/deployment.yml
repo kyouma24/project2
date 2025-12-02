@@ -9,9 +9,11 @@ env:
   MONGODB_DB_NAME: my_database
 jobs:
   test:
+    environment: project2
     env: 
-      MONGODB_USERNAME: kyouma
-      MONGODB_PASSWORD: Steinsgate100
+      MONGODB_CLUSTER_ADDRESS: cluster0.484eg38.mongodb.net/
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
     runs-on: ubuntu-latest
     steps:
@@ -29,13 +31,17 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Output information
-        run: echo "MONGODB_CLUSTER_ADDRESS=${{ env.MONGODB_CLUSTER_ADDRESS }}"
+        run: | 
+          echo "MONGODB_CLUSTER_ADDRESS=${{ env.MONGODB_CLUSTER_ADDRESS }}"
+          echo "The username is ${{ secrets.MONGODB_USERNAME }}."
+          echo "The password is ${{ secrets.MONGODB_PASSWORD }}."
   deploy:
     needs: test
+    environment: project2
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |        
           echo "The database name is ${{ env.MONGODB_DB_NAME }}."
-          echo "The username is ${{ env.MONGODB_USERNAME }}."
+          echo "The username is ${{ secrets.MONGODB_USERNAME }}."
           echo "The password is ${{ secrets.MONGODB_PASSWORD }}."
