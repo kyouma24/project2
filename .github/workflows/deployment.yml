@@ -13,10 +13,6 @@ env:
 jobs:
   test:
     environment: testing
-    env:
-      MONGODB_CLUSTER_ADDRESS: ${{ vars.MONGODB_CLUSTER_ADDRESS }}
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -34,7 +30,7 @@ jobs:
         run: npm test
       - name: Output information          
         run: | 
-          echo "MONGODB_CLUSTER_ADDRESS=${{ vars.MONGODB_CLUSTER_ADDRESS }}"
+          echo "MONGODB_CLUSTER_ADDRESS is ${{ vars.MONGODB_CLUSTER_ADDRESS }}."
           echo "The username is ${{ secrets.MONGODB_USERNAME }}."
           echo "The password is ${{ secrets.MONGODB_PASSWORD }}."
   deploy:
