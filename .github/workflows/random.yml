@@ -1,0 +1,24 @@
+name: Random Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    outputs:
+      random-number: ${{ steps.random_number.outputs.random-number }}
+
+    steps:
+      - name: Hello step
+        run: echo "Hello!"
+
+      - name: Random Number
+        id: random_number
+        run: echo "random-number=$RANDOM" >> $GITHUB_OUTPUT
+
+      - name: Display Random Number
+        run: echo "The random number is ${{ steps.random_number.outputs.random-number }}"
