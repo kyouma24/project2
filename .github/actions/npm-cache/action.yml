@@ -24,5 +24,5 @@ runs:
       id: install-deps
       run: |
         npm ci
-        echo "cache=${{ steps.cache-npm }}" >> $GITHUB_OUTPUT
+        echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT
       shell: bash
