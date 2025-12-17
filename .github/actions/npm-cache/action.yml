@@ -4,7 +4,7 @@ inputs:
   caching:
     description: 'Whether to run Caching steps or not'
     required: false
-    default: 'true'
+    default: 'false'
 runs:
   using: composite
   steps:
