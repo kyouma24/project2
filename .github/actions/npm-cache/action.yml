@@ -1,0 +1,18 @@
+name: NPM Dependency Caching
+description: Caching action for NPM modules Dependency
+runs:
+  using: composite
+  steps:
+    - name: Cache Dependencies
+      uses: actions/cache@v4
+      id: cache-npm
+      with: 
+        path: node-modules
+        key: deps-modules-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          deps-modules-
+          deps-
+    - name: Install Dependencies
+      if: steps.cache-npm.outputs.cache-hit != true
+      run: npm ci
+      shell: bash

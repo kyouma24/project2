@@ -7,17 +7,7 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v6
       - name: Cache Dependencies
-        uses: actions/cache@v4
-        id: cache-npm
-        with: 
-          path: node-modules
-          key: deps-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            deps-modules-
-            deps-
-      - name: Install Dependencies
-        if: ${{ steps.cache-npm.outputs.cache-hit != true }}
-        run: npm ci
+        uses: ./.github/actions/npm-cache
       - name: Lint Code
         run: npm run lint
     
@@ -27,17 +17,7 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v6
       - name: Cache Dependencies
-        uses: actions/cache@v4
-        id: cache-npm
-        with: 
-          path: node-modules
-          key: deps-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            deps-modules-
-            deps-
-      - name: Install Dependencies
-        if: ${{ steps.cache-npm.outputs.cache-hit != true }}
-        run: npm ci
+        uses: ./.github/actions/npm-cache
       - name: Test code
         id: test-code
         run: npm test
@@ -55,17 +35,7 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v6
       - name: Cache Dependencies
-        uses: actions/cache@v4
-        id: cache-npm
-        with: 
-          path: node-modules
-          key: deps-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            deps-modules-
-            deps-
-      - name: Install Dependencies
-        if: ${{ steps.cache-npm.outputs.cache-hit != true }}
-        run: npm ci
+        uses: ./.github/actions/npm-cache
       - name: Build Code
         run: npm run build
       - name: Upload Dist Files
@@ -100,5 +70,3 @@ jobs:
           path: ./test
       - name: Output Test Results
         run: echo "If you're seeing this message then one of the steps have failed"
-      
-      
