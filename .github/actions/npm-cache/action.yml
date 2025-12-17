@@ -1,15 +1,15 @@
-name: NPM Dependency Caching
-description: Caching action for NPM modules Dependency
+name: Cache & Install Dependencies
+description: Caches and installs project dependencies (npm)
 runs:
-  using: composite
-  steps:
-    - name: Cache Dependencies
-      id: cache-npm
+  using: 'composite'
+  steps: 
+    - name: Cache dependencies
+      id: cache
       uses: actions/cache@v3
-      with: 
-        path: node-modules
-        key: deps-modules-${{ hashFiles('**/package-lock.json') }}
-    - name: Install Dependencies
-      if: steps.cache-npm.outputs.cache-hit != true
+      with:
+        path: node_modules
+        key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       run: npm ci
       shell: bash
