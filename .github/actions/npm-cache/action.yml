@@ -1,15 +1,21 @@
 name: NPM Dependency Caching
 description: Caching action for NPM modules Dependency
+inputs:
+  caching:
+    description: 'Whether to run Caching steps or not'
+    required: false
+    default: 'true'
 runs:
   using: composite
   steps:
     - name: Cache Dependencies
+      if: inputs.caching == true
       id: cache-npm
       uses: actions/cache@v3
       with: 
         path: node_modules
         key: deps-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Install Dependencies
-      if: steps.cache-npm.outputs.cache-hit != true
+      if: steps.cache-npm.outputs.cache-hit != true || inputs.caching != true
       run: npm ci
       shell: bash
