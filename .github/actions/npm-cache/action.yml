@@ -4,8 +4,8 @@ runs:
   using: composite
   steps:
     - name: Cache Dependencies
-      uses: actions/cache@v4
       id: cache-npm
+      uses: actions/cache@v3
       with: 
         path: node-modules
         key: deps-modules-${{ hashFiles('**/package-lock.json') }}
