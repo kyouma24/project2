@@ -9,9 +9,6 @@ runs:
       with: 
         path: node-modules
         key: deps-modules-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          deps-modules-
-          deps-
     - name: Install Dependencies
       if: steps.cache-npm.outputs.cache-hit != true
       run: npm ci
