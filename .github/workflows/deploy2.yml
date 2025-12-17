@@ -30,7 +30,6 @@ jobs:
 
   build:
     needs: testing
-    if: failure()
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
