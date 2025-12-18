@@ -3,4 +3,18 @@ description: To offload Caching Dependency Steps and simplify
 runs:
   using: 'composite'
   steps:
-  
+    - name: Get Code
+      uses: actions/checkout@v5
+    - name: Cache NPM Dependencies
+      uses: actions/cache@v5
+      id: npm-cache
+      with: 
+        path: node_modules
+        key: ${{ runner.os }}-npm-modules-${{ hashFiles('**/package-lock.json')}}
+        restore-keys: |
+          ${{ runner.os }}-npm-modules-
+          ${{ runner.os }}-npm-
+    - name: Install Dependencies
+      if: steps.npm-cache.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash
