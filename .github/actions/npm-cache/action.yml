@@ -1,9 +1,15 @@
 name: Loading Cache Dependencies Custom Action
 description: To offload Caching Dependency Steps and simplify
+inputs:
+  caching:
+    description: 'Check whether Caching happened'
+    required: false
+    default: 'true'
 runs:
   using: 'composite'
   steps:
     - name: Cache NPM Dependencies
+      if: inputs.caching == 'false'
       uses: actions/cache@v5
       id: npm-cache
       with: 
@@ -13,6 +19,6 @@ runs:
           ${{ runner.os }}-npm-modules-
           ${{ runner.os }}-npm-
     - name: Install Dependencies
-      if: steps.npm-cache.outputs.cache-hit != 'true'
+      if: steps.npm-cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
       run: npm ci
       shell: bash
