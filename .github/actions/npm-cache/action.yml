@@ -2,9 +2,15 @@ name: Loading Cache Dependencies Custom Action
 description: To offload Caching Dependency Steps and simplify
 inputs:
   caching:
-    description: 'Check whether Caching happened'
+    description: 'Whether to cache or not'
     required: false
     default: 'true'
+
+outputs:
+  cache-status:
+    description: "Check whether caching happened?"
+    value: ${{ steps.install.outputs.npm-cache-status }}
+
 runs:
   using: 'composite'
   steps:
@@ -20,5 +26,8 @@ runs:
           ${{ runner.os }}-npm-
     - name: Install Dependencies
       if: steps.npm-cache.outputs.cache-hit != 'true' || inputs.caching != 'true'
-      run: npm ci
+      id: install
+      run: |
+        npm ci
+        echo "npm-cache-status=${{ inputs.caching }}" >> $GITHUB_OUTPUT
       shell: bash
