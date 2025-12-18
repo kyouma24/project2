@@ -5,6 +5,8 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Code
+        uses: actions/checkout@v5
       - name: Checking Out & Installing Dependencies
         uses: ./.github/actions/npm-cache
       - name: Linting Code
@@ -13,6 +15,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Code
+        uses: actions/checkout@v5
       - name: Checking Out & Installing Dependencies
         uses: ./.github/actions/npm-cache
       - name: Testing Code
@@ -29,6 +33,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      - name: Get Code
+        uses: actions/checkout@v5
       - name: Checking Out & Installing Dependencies
         uses: ./.github/actions/npm-cache
       - name: Build Code

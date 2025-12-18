@@ -3,8 +3,6 @@ description: To offload Caching Dependency Steps and simplify
 runs:
   using: 'composite'
   steps:
-    - name: Get Code
-      uses: actions/checkout@v5
     - name: Cache NPM Dependencies
       uses: actions/cache@v5
       id: npm-cache
