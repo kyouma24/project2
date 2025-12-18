@@ -1,28 +1,6 @@
-name: NPM Dependency Caching
-description: Caching action for NPM modules Dependency
-inputs:
-  caching:
-    description: 'Whether to run Caching steps or not'
-    required: false
-    default: 'true'
-outputs:
-  cache-used:
-   description: 'Whether cache was used?'
-   value: ${{ steps.install-deps.outputs.cache }}
+name: Loading Cache Dependencies Custom Action
+description: To offload Caching Dependency Steps and simplify
 runs:
-  using: composite
+  using: 'composite'
   steps:
-    - name: Cache Dependencies
-      if: inputs.caching == 'true'
-      id: cache-npm
-      uses: actions/cache@v3
-      with: 
-        path: node_modules
-        key: deps-modules-${{ hashFiles('**/package-lock.json') }}
-    - name: Install Dependencies
-      if: steps.cache-npm.outputs.cache-hit != 'true' || inputs.caching != 'true'
-      id: install-deps
-      run: |
-        npm ci
-        echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT
-      shell: bash
+  

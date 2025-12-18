@@ -1,80 +1,98 @@
-name: Lint, Test, Build & Deploy
-on: [push, workflow_dispatch]
+name: Complete Deployment Workflow
+on: 
+  push
 jobs:
-  lint:
+  linting:
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
-        uses: actions/checkout@v6
-      - name: Cache Dependencies
-        id: caching-dependencies
-        uses: ./.github/actions/npm-cache
-        with:
-          caching: 'false'
-      - name: Output Cache Details
-        run: echo "Cache used? ${{ steps.caching-dependencies.outputs.cache-used }}"
-      - name: Lint Code
-        run: npm run lint
-    
-  testing:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Code
-        uses: actions/checkout@v6
-      - name: Cache Dependencies
-        id: caching-dependencies
-        uses: ./.github/actions/npm-cache
-      - name: Output Cache Details
-        run: echo "Cache used? ${{ steps.caching-dependencies.outputs.cache-used }}"
-      - name: Test code
-        id: test-code
-        run: npm test
-      - name: Upload Test Report
-        if: failure() && steps.test-code.outcome == 'failure'
-        uses: actions/upload-artifact@v6
+        uses: actions/checkout@v5
+      - name: Cache NPM Dependencies
+        uses: actions/cache@v5
+        id: npm-cache
         with: 
+          path: node_modules
+          key: ${{ runner.os }}-npm-modules-${{ hashFiles('**/package-lock.json')}}
+          restore-keys: |
+            ${{ runner.os }}-npm-modules-
+            ${{ runner.os }}-npm-
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Linting Code
+        run: npm run lint
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v5
+      - name: Cache NPM Dependencies
+        uses: actions/cache@v5
+        id: npm-cache
+        with: 
+          path: node_modules
+          key: ${{ runner.os }}-npm-modules-${{ hashFiles('**/package-lock.json')}}
+          restore-keys: |
+            ${{ runner.os }}-npm-modules-
+            ${{ runner.os }}-npm-
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Testing Code
+        id: npm-test
+        run: npm run test
+      - name: Upload Test Report
+        if: failure() || steps.npm-test.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
           name: test-report
           path: test.json
 
   build:
-    needs: testing
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
-        uses: actions/checkout@v6
-      - name: Cache Dependencies
-        uses: ./.github/actions/npm-cache
+        uses: actions/checkout@v5
+      - name: Cache NPM Dependencies
+        uses: actions/cache@v5
+        id: npm-cache
+        with: 
+          path: node_modules
+          key: ${{ runner.os }}-npm-modules-${{ hashFiles('**/package-lock.json')}}
+          restore-keys: |
+            ${{ runner.os }}-npm-modules-
+            ${{ runner.os }}-npm-
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
       - name: Build Code
         run: npm run build
-      - name: Upload Dist Files
-        uses: actions/upload-artifact@v6
-        with: 
-          name: dist-files
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
           path: dist
-
+    
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v5
+      - name: Deployment
+        run: echo "Started Deploy step"
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
         with: 
-          name: dist-files
-          path: ./dist
-      - name: Verify Dist Files
-        run: ls
-      - name: Deploying
-        run: echo "Deploying application ...."
+          name: build-files
+      - name: Display structure of downloaded files
+        run: ls -R
 
   report:
-    needs: [lint, deploy]
-    if: failure()
+    needs: [linting, deploy]
     runs-on: ubuntu-latest
-    steps: 
-      - name: Download Report
-        uses: actions/download-artifact@v5
-        with: 
-          name: test-report
-          path: ./test
-      - name: Output Test Results
-        run: echo "If you're seeing this message then one of the steps have failed"
+    if: failure()
+    steps:
+      - name: Build Report
+        run: |
+          echo "If you're seeing this message then one of the jobs/steps have failed"
